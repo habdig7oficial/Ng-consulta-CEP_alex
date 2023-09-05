@@ -1,0 +1,7 @@
+{
+  "name": "Ng-consulta-CEP",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
