@@ -17,18 +17,38 @@
     <h1>Consulta CEP</h1>
 
     <ion-segment value="default">
-      <ion-segment-button value="default">
-        <ion-label>Default</ion-label>
+      <ion-segment-button (click)="CEP_mode=true" value="default">
+        <ion-label>Digit CEP</ion-label>
       </ion-segment-button>
-      <ion-segment-button value="segment">
-        <ion-label>Segment</ion-label>
+      <ion-segment-button (click)="CEP_mode=false" value="segment">
+        <ion-label>Digit a Sigla do Estado, Cidade e Rua</ion-label>
       </ion-segment-button>
     </ion-segment>
 
     <div class="d-flex justify-content-center">
-      <ion-input class="w-25 " placeholder="Insira o CEP desejado Aqui"></ion-input>
+      <ion-input [(ngModel)]="cpf" *ngIf="CEP_mode == true" class="w-25 " placeholder="Insira o CEP desejado Aqui"></ion-input>
+      
+      <div class="d-flex flex-row" *ngIf="CEP_mode == false">
+        <ion-input class="mx-2" placeholder="Insira a Sigla do Estado desejado Aqui"></ion-input>
+        <ion-input class="mx-2" placeholder="Insira a Cidade desejada Aqui"></ion-input>
+        <ion-input class="mx-2" placeholder="Insira a Rua desejada Aqui"></ion-input>
+      </div>
     </div>
 
-    <ion-button class="my-4">Consultar</ion-button>
+    <ion-button (click)="search()" class="my-4">Consultar</ion-button>
+    <!--<p>{{ api_str }}</p>-->
+
+    <div class="d-flex flex-column" *ngIf="api_return != undefined">
+      <h1>{{ api_return.cep }}</h1>
+
+      <ion-label>Loggradouro: {{ api_return.logradouro }}</ion-label>
+      <ion-label>Bairro: {{ api_return.bairro }}</ion-label>
+      <ion-label>Localidade: {{ api_return.localidade }}</ion-label>
+      <ion-label>Complemento: {{ api_return.complemento }}</ion-label>
+      <ion-label>DDD: {{ api_return.ddd }}</ion-label>
+      <ion-label>Uf: {{ api_return.uf }}</ion-label>
+      <ion-label>IBGE: {{ api_return.ibge }}</ion-label>
+      <ion-label>Siafi: {{ api_return.siafi }}</ion-label>
+    </div>
   </div>
 </ion-content>
