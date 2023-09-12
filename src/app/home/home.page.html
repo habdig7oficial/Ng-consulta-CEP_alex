@@ -26,25 +26,27 @@
     </ion-segment>
 
     <div class="d-flex justify-content-center">
-      <ion-input [(ngModel)]="cep" *ngIf="CEP_mode == true" class="w-25 " placeholder="Insira o CEP desejado Aqui"></ion-input>
-      
+      <ion-input [(ngModel)]="cep" *ngIf="CEP_mode == true" class="w-25 "
+        placeholder="Insira o CEP desejado Aqui"></ion-input>
+
       <div class="d-flex flex-row" *ngIf="CEP_mode == false">
-        <ion-select [(ngModel)]="state" interface="popover" aria-label="Fruit" placeholder="Select all fruits that apply" [multiple]="true">
-          <ion-select-option *ngFor="let region of regions;index as i"  [value]="region.sigla">{{ region.nome }} </ion-select-option>
+        <ion-select [(ngModel)]="state" interface="popover" aria-label="Fruit" placeholder="Insira o Seu estado">
+          <ion-select-option *ngFor="let region of regions;index as i" [value]="region.sigla">{{ region.nome }}
+          </ion-select-option>
         </ion-select>
 
         <!--<ion-input [(ngModel)]="state"  class="mx-2" placeholder="Insira a Sigla do Estado desejado Aqui"></ion-input>-->
         <ion-input [(ngModel)]="city" class="mx-2" placeholder="Insira a Cidade desejada Aqui"></ion-input>
-        <ion-input [(ngModel)]="street"  class="mx-2" placeholder="Insira a Rua desejada Aqui"></ion-input>
+        <ion-input [(ngModel)]="street" class="mx-2" placeholder="Insira a Rua desejada Aqui"></ion-input>
       </div>
     </div>
 
     <ion-button (click)="search()" class="my-4">Consultar</ion-button>
     <!--<p>{{ api_str }}</p>-->
 
-    <div class="" *ngIf="api_return != undefined">
-      <div class="d-flex flex-column" *ngFor="let cep_obj of api_return; index as i;">
-        <h1>{{ cep_obj.cep }}</h1>
+    <ion-list class="" *ngIf="api_return != undefined;">
+      <ion-item class="d-flex flex-column" *ngFor="let cep_obj of api_return; index as i;">
+        <ion-label>{{ cep_obj.cep }}</ion-label>
 
         <ion-label>Loggradouro: {{ cep_obj.logradouro }}</ion-label>
         <ion-label>Bairro: {{ cep_obj.bairro }}</ion-label>
@@ -54,7 +56,10 @@
         <ion-label>Uf: {{ cep_obj.uf }}</ion-label>
         <ion-label>IBGE: {{ cep_obj.ibge }}</ion-label>
         <ion-label>Siafi: {{ cep_obj.siafi }}</ion-label>
-      </div>
-    </div>
+      </ion-item>
+  </ion-list>
+  <div *ngIf="api_return != undefined && api_return.length === 0;">
+    <p class="text-center text-muted">(não foi encontrado nenhum dado)</p>
+  </div>
   </div>
 </ion-content>
