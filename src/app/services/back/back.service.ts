@@ -26,4 +26,8 @@ export class BackService {
     return this.http.request("GET", `https://viacep.com.br/ws/${cep}/${protocol}/`, { responseType: ctype }).pipe()
   }
 
+  public async GetByRegion() {
+    return this.http.request("GET", `https://servicodados.ibge.gov.br/api/v1/localidades/estados`, { responseType: "json" }).pipe()
+  }
+
 }

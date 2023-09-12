@@ -3,6 +3,9 @@ import { BackService } from "../services/back/back.service"
 import { Observable } from 'rxjs';
 import CEP from '../interfaces/cep';
 
+
+interface region { id: number, sigla: string, nome: string }
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -15,35 +18,49 @@ export class HomePage implements OnInit {
   cpf: string = ""
 
   http_constructor?: Observable<CEP>
+  http_cep2?: Observable<Array<CEP>>
 
-  api_return?: CEP
+  getRegion?: Observable<any>
+  regions?: Array<region>
+
+  api_return?: CEP[]
   api_str?: string
+
+  state?: string
+  city?: string
+  street?: string
+
 
   constructor(public back: BackService) {
   }
 
   async ngOnInit() {
+    this.getRegion = await this.back.GetByRegion()
 
+    this.getRegion.subscribe((res: Array<region>) => {
+      this.regions = res
+      console.log(res)
+    })
   }
 
   public async search() {
     if (this.CEP_mode == true) {
       console.log(this.cpf)
       this.http_constructor = await this.back.GetByCEP(this.cpf, "json")
-      this.http_constructor?.subscribe((res: CEP)=>{
+      this.http_constructor?.subscribe((res: CEP) => {
         console.log(res)
-        this.api_return = res
+        this.api_return = [res]
         this.api_str = JSON.stringify(res)
         //console.log(new DOMParser().parseFromString(res, "text/xml"))
       })
     }
-    else if (this.CEP_mode == false){
-      console.log(this.cpf)
-      this.http_constructor = await this.back.GetByCEP(this.cpf, "json")
-      this.http_constructor?.subscribe((res: CEP)=>{
+    else if (this.CEP_mode == false) {
+      console.log(`${this.state}/${this.city}/${this.street}`)
+      this.http_cep2 = await this.back.GetByCEP(`${this.state}/${this.city}/${this.street}`, "json")
+      this.http_cep2?.subscribe((res: Array<CEP>) => {
         console.log(res)
-        this.api_return = res
-        this.api_str = JSON.stringify(res)
+        //this.api_return = res
+        //this.api_str = JSON.stringify(res)
         //console.log(new DOMParser().parseFromString(res, "text/xml"))
       })
     }
