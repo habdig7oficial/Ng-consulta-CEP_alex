@@ -15,7 +15,7 @@ export class HomePage implements OnInit {
 
   CEP_mode: boolean = true
 
-  cpf: string = ""
+  cep: string = ""
 
   http_constructor?: Observable<CEP>
   http_cep2?: Observable<Array<CEP>>
@@ -44,9 +44,12 @@ export class HomePage implements OnInit {
   }
 
   public async search() {
+
+    this.cep = this.cep.replace(/\-/g, "")
+
     if (this.CEP_mode == true) {
-      console.log(this.cpf)
-      this.http_constructor = await this.back.GetByCEP(this.cpf, "json")
+      console.log(this.cep)
+      this.http_constructor = await this.back.GetByCEP(this.cep, "json")
       this.http_constructor?.subscribe((res: CEP) => {
         console.log(res)
         this.api_return = [res]
@@ -59,7 +62,8 @@ export class HomePage implements OnInit {
       this.http_cep2 = await this.back.GetByCEP(`${this.state}/${this.city}/${this.street}`, "json")
       this.http_cep2?.subscribe((res: Array<CEP>) => {
         console.log(res)
-        //this.api_return = res
+        console.log("sub")
+        this.api_return = res
         //this.api_str = JSON.stringify(res)
         //console.log(new DOMParser().parseFromString(res, "text/xml"))
       })
